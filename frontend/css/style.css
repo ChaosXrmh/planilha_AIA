@@ -1,0 +1,444 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(8, 8, 8, 0.3);
+            width: 100%;
+            max-width: 700px;
+            overflow: hidden;
+        }
+
+        /* Header com Logo */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            padding: 25px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-area {
+            background: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 18px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* Conteúdo Principal */
+        .content {
+            padding: 35px;
+        }
+
+        /* Área de Input */
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #3498db;
+            border-radius: 2px;
+        }
+
+        .file-input-area {
+            border: 2px dashed #bdc3c7;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+
+        .file-input-area:hover {
+            border-color: #3498db;
+            background: #e8f4f8;
+        }
+
+        .file-input-area.drag-over {
+            border-color: #2ecc71;
+            background: #d5f4e6;
+        }
+
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .file-input-text {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .file-name {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .btn-browse {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-browse:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Área de Configuração */
+        .config-description {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .config-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .config-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .config-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 180px;
+            padding: 6px 8px;
+        }
+
+        .output-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .config-label {
+            font-size: 14px;
+            color: #444;
+            margin-right: 6px;
+        }
+
+        .label-left {
+            margin-left: 12px;
+        }
+
+        .config-select {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .config-input {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            min-width: 160px;
+        }
+
+        .config-button {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .output-pick-name {
+            margin-left: 8px;
+            color: #444;
+            font-size: 13px;
+        }
+
+        .batch-input {
+            width: 80px;
+            text-align: center;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            padding: 6px;
+        }
+
+        .batch-info {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .config-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border: 2px solid #ecf0f1;
+        }
+
+        @media (max-width: 620px) {
+            .config-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .config-item {
+                width: 100%;
+                min-width: unset;
+                padding: 6px 0;
+            }
+        }
+
+        .batch-control {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .batch-btn {
+            background: white;
+            border: 2px solid #3498db;
+            color: #3498db;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            min-width: 60px;
+        }
+
+        .batch-btn:hover {
+            background: #3498db;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .batch-btn.small {
+            padding: 10px 16px;
+            font-size: 18px;
+        }
+
+        .batch-value {
+            background: white;
+            border: 3px solid #2c3e50;
+            color: #2c3e50;
+            padding: 17x 34px;
+            border-radius: 10px;
+            font-size: 32px;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .prediction-box {
+            background: #e8f4f8;
+            border-left: 4px solid #346888;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        .prediction-text {
+            color: #2c3e50;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prediction-icon {
+            font-size: 20px;
+        }
+
+        /* Botão de Ação */
+        .action-section {
+            margin-top: 30px;
+        }
+
+        .btn-process {
+            width: 100%;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-process:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-process:disabled {
+            background: #688385;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Barra de Progresso */
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar-wrapper {
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 30px;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 13px;
+        }
+
+        /* Mensagem de Sucesso */
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #d5f4e6 0%, #b2e6d4 100%);
+            border: 2px solid #2ecc71;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success-message.active {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .success-title {
+            color: #27ae60;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .btn-open-folder {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-open-folder:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
