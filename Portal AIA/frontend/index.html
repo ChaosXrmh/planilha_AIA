@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divisão de Lotes</title>
+    <!-- Favicon da aba do navegador -->
+    <link rel="icon" href="img/escudoSurf.png" type="image/png">
+    <script>
+        // Definir stubs seguros para evitar ReferenceError quando recursos carregam
+        window.resourceLoaded = window.resourceLoaded || function (type) {
+            try { console.log(type + ' loaded'); } catch (e) { }
+        };
+        window.resourceError = window.resourceError || function (type, url) {
+            try { console.warn('Error loading ' + type + ': ' + url); } catch (e) { }
+        };
+    </script>
+    <link rel="stylesheet" href="css/style.css" onload="resourceLoaded('CSS')"
+        onerror="resourceError('CSS', this.href)">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="img/surf.png" width="150" height="75" alt="Surf Logo">
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <div class="section-title">
+                    Selecione a Base de Dados Original
+                </div>
+                <div class="file-input-area" id="dropArea">
+                    <div class="file-icon">📊</div>
+                    <div class="file-input-text">
+                        Arraste e solte o arquivo Excel aqui<br>
+                        <strong>ou</strong>
+                    </div>
+                    <button class="btn-browse" onclick="document.getElementById('fileInput').click()">
+                        📂 Procurar Arquivo Excel...
+                    </button>
+                    <div class="file-name" id="fileName"></div>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls">
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    Configuração de Lotes (Chunks)
+                </div>
+
+                <div class="config-section">
+                    <div class="config-description">
+                        Defina a ação e o nome da empresa para personalizar os arquivos gerados.
+                    </div>
+
+                    <div class="config-wrapper">
+                        <div class="config-row">
+                            <div class="config-item">
+                                <label for="actionSelect" class="config-label">Ação:</label>
+                                <select id="actionSelect" class="config-select">
+                                    <option value="criar">Criar</option>
+                                    <option value="alterar">Alterar</option>
+                                    <option value="deletar">Deletar</option>
+                                </select>
+                            </div>
+
+                            <div class="config-item">
+                                <label for="companyInput" class="config-label">Empresa:</label>
+                                <input id="companyInput" type="text" placeholder="Nome da empresa" class="config-input">
+                            </div>
+
+                            <div class="config-item">
+                                <label for="outputFormat" class="config-label">Formato de Envio:</label>
+                                <select id="outputFormat" class="config-select">
+                                    <option value="">-- Selecione o formato (obrigatório) --</option>
+                                    <option value="planilha">Planilha</option>
+                                    <option value="lista">Lista (números com vírgula)</option>
+                                </select>
+                            </div>
+
+                            <div class="config-item">
+                                <label for="outputPickBtn" class="config-label">Pasta de saída para upload:</label>
+                                <div class="output-picker">
+                                    <button id="outputPickBtn" type="button" class="config-button">
+                                        Escolher pasta...
+                                    </button>
+                                    <span id="outputPickName" class="output-pick-name">(nenhuma)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="batch-control">
+                            <button class="batch-btn" onclick="adjustBatch(-50)">-50</button>
+                            <button class="batch-btn small" onclick="adjustBatch(-10)">◀</button>
+                            <input id="batchSize" class="batch-value batch-input" type="number" value="100" min="1"
+                                max="100">
+                            <button class="batch-btn small" onclick="adjustBatch(10)">▶</button>
+                            <button class="batch-btn" onclick="adjustBatch(50)">+50</button>
+                        </div>
+
+                        <div class="batch-info">
+                            Máximo permitido por lote: 100 linhas
+                        </div>
+                    </div>
+
+                    <div class="prediction-box">
+                        <div class="prediction-text">
+                            <span class="prediction-icon">ℹ️</span>
+                            <span id="predictionText">Selecione um arquivo para ver a previsão</span>
+                        </div>
+                        <div id="mappingBox" class="mapping-box" style="margin-top:10px;display:none;">
+                            <strong>Mapeamento detectado:</strong>
+                            <div id="mappingList" style="margin-top:6px;color:#2c3e50;font-size:13px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <button class="btn-process" id="btnProcess" disabled>
+                    <span>🚀</span>
+                    <span>INICIAR DIVISÃO E GERAR CSVs</span>
+                </button>
+
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-bar" id="progressBar">0%</div>
+                    </div>
+                    <div class="progress-text" id="progressText">
+                        Preparando...
+                    </div>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    <div class="success-icon">✨</div>
+                    <div class="success-title">Processo Concluído com Sucesso!</div>
+                    <div style="color: #27ae60; font-size: 14px; margin: 10px 0;">
+                        <span id="filesCreated">0</span> arquivo(s) criado(s)
+                    </div>
+                    <button class="btn-open-folder" onclick="openOutputFolder()">
+                        📁 Abrir Pasta dos Arquivos
+                    </button>
+                    <button class="btn-copy-link" id="copyNetworkLinkBtn" title="Copiar link para abrir o app em outra máquina na rede">
+                        🔗 Copiar link na rede
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- diagnóstico visível -->
+    <div id="loadDiagnostics"
+        style="position:fixed;right:10px;bottom:10px;background:#fff8;backdrop-filter:blur(4px);padding:8px;border-radius:6px;font-size:12px;display:none;z-index:9999;">
+        <strong>Recursos:</strong>
+        <div id="diagList">Carregando...</div>
+    </div>
+
+    <!-- Biblioteca para ler Excel no cliente (SheetJS) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- JS EXTERNO -->
+    <script src="js/script.js" onload="resourceLoaded('JS')" onerror="resourceError('JS', this.src)" defer></script>
+
+
+    <script>
+        function showDiagnostics(msg) {
+            const el = document.getElementById('loadDiagnostics');
+            const list = document.getElementById('diagList');
+            el.style.display = 'block';
+            list.textContent = msg;
+            console.warn('Load diag:', msg);
+        }
+        function resourceLoaded(type) {
+            showDiagnostics(type + ' carregado com sucesso.');
+        }
+        function resourceError(type, url) {
+            showDiagnostics('Erro ao carregar ' + type + ': ' + url);
+        }
+        // checar estado após DOM pronto (caso onload não tenha sido chamado)
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                // se CSS aparenta não ter sido aplicado (verifica cor padrão do body)
+                const bodyBg = getComputedStyle(document.body).backgroundColor;
+                if (!bodyBg || bodyBg === 'rgba(0, 0, 0, 0)' || bodyBg === 'transparent') {
+                    // apenas notifica — CSS pode não definir background; usuário verá a mensagem se houver falha real
+                    // nada forçado aqui para evitar falso-positivo
+                }
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>
